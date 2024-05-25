@@ -1100,7 +1100,7 @@ number = " "
 while number != '9':
     print("1 : 마일리지 적립")
     print("2 : 마일리지 랭킹보드")
-    print('9 : 프로그랢 종료')
+    print('9 : 프로그램 종료')
     number = input("Number : ")
     print()
     if number == '1':
