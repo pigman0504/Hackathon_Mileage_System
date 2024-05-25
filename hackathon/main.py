@@ -879,7 +879,7 @@ def get_stu_price(category):
         if stu_data[i][0] == category:
             count += 1
             stu_num_list.append(stu_data[i][1])
-            print(count, stu_data[i][1], stu_data[i][2], stu_data[i][3])
+            print(str(count)+':' ,stu_data[i][1], stu_data[i][2], stu_data[i][3])
     number = input("Number : ")
     while not is_integer(number) or int(number) < 1 or int(number) > count:
         count = 0
@@ -888,7 +888,7 @@ def get_stu_price(category):
         for j in range(len(stu_data)):
             if stu_data[j][0] == category:
                 count += 1
-                print(count, stu_data[j][1], stu_data[j][2], stu_data[j][3])
+                print(str(count)+':' ,stu_data[i][1], stu_data[i][2], stu_data[i][3])
         number = input("Number : ")
     return stu_num_list[int(number) - 1]
 
@@ -908,7 +908,7 @@ def order(grade):
     mileage = input("Number : ")
     print()
     while mileage != '9':
-        while is_integer(mileage) == False or mileage < '1' or mileage > '5':
+        while is_integer(mileage) == False or int(mileage) < 1 or int(mileage) > 5:
             print("Type Error !!")
             print()
             print("1 : "+grade+"-1반")
@@ -918,6 +918,7 @@ def order(grade):
             print("5 : "+grade+"-5반")
             print("9 : 적립 취소")
             mileage = input("Number : ")
+            print()
         reicve_price = get_stu_price(grade+"-"+mileage)
         mileage_list = reicve_price
         return mileage_list
@@ -956,8 +957,8 @@ def add_mileage():
         print("1 : 마일리지 추가")
         print("2 : 마일리지 종료")
         number = input("Number : ")
-        print()
         if number == '1':
+            print()
             print("1 : 7학년")
             print("2 : 8학년")
             print("3 : 9학년")
@@ -965,8 +966,7 @@ def add_mileage():
             print("5 : 11학년")
             grade = input("Grade Number : ")
             print()
-    
-            while is_integer(grade) == False or grade < '1' or grade > '5':
+            while is_integer(grade) == False or int(grade) < 1 or int(grade) > 5:
                 print('Type Error !!')
                 print()
                 print("1 : 7학년")
@@ -983,7 +983,6 @@ def add_mileage():
                 print("적립된 마일리지 :", recive_cal)
                 print()
         elif number == '2':
-            print("Program End !!") 
             save_data(file_name, stu_data)
         else:
             print("Type Error !!")
@@ -1101,7 +1100,7 @@ number = " "
 while number != '9':
     print("1 : 마일리지 적립")
     print("2 : 마일리지 랭킹보드")
-    print('9 : 종료')
+    print('9 : 프로그랢 종료')
     number = input("Number : ")
     print()
     if number == '1':
