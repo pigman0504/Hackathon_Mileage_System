@@ -888,7 +888,7 @@ def get_stu_price(category):
         for j in range(len(stu_data)):
             if stu_data[j][0] == category:
                 count += 1
-                print(str(count)+':' ,stu_data[i][1], stu_data[i][2], stu_data[i][3])
+                print(str(count)+':' ,stu_data[j][1], stu_data[j][2], stu_data[j][3])
         number = input("Number : ")
     return stu_num_list[int(number) - 1]
 
@@ -899,31 +899,24 @@ def get_stu_price(category):
 
 def order(grade):
     mileage_list = " "
-    print("1 : "+grade+"-1반")
-    print("2 : "+grade+"-2반")
-    print("3 : "+grade+"-3반")
-    print("4 : "+grade+"-4반")
-    print("5 : "+grade+"-5반")
-    print("9 : 적립 취소")
-    mileage = input("Number : ")
-    print()
-    while mileage != '9':
-        while is_integer(mileage) == False or int(mileage) < 1 or int(mileage) > 5:
+    while True:
+        print("1 : "+grade+"-1반")
+        print("2 : "+grade+"-2반")
+        print("3 : "+grade+"-3반")
+        print("4 : "+grade+"-4반")
+        print("5 : "+grade+"-5반")
+        print("9 : 적립 취소")
+        mileage = input("Number : ")
+        print()
+        if mileage == '9':
+            return mileage_list
+        elif is_integer(mileage) == True and (int(mileage) >= 1 and int(mileage) <= 5):
+            reicve_price = get_stu_price(grade+"-"+mileage)
+            mileage_list = reicve_price
+            return mileage_list
+        else:
             print("Type Error !!")
             print()
-            print("1 : "+grade+"-1반")
-            print("2 : "+grade+"-2반")
-            print("3 : "+grade+"-3반")
-            print("4 : "+grade+"-4반")
-            print("5 : "+grade+"-5반")
-            print("9 : 적립 취소")
-            mileage = input("Number : ")
-            print()
-        reicve_price = get_stu_price(grade+"-"+mileage)
-        mileage_list = reicve_price
-        return mileage_list
-    return mileage_list
-
 
 
 
@@ -957,18 +950,10 @@ def add_mileage():
         print("1 : 마일리지 추가")
         print("2 : 마일리지 종료")
         number = input("Number : ")
+        print()
         if number == '1':
-            print()
-            print("1 : 7학년")
-            print("2 : 8학년")
-            print("3 : 9학년")
-            print("4 : 10학년")
-            print("5 : 11학년")
-            grade = input("Grade Number : ")
-            print()
-            while is_integer(grade) == False or int(grade) < 1 or int(grade) > 5:
-                print('Type Error !!')
-                print()
+            stop = " "
+            while stop != "Yes":
                 print("1 : 7학년")
                 print("2 : 8학년")
                 print("3 : 9학년")
@@ -976,18 +961,24 @@ def add_mileage():
                 print("5 : 11학년")
                 grade = input("Grade Number : ")
                 print()
-            cal = int(grade) + 6
-            recive_order = order(str(cal))
-            recive_cal = cal_order(recive_order)
-            if recive_cal != 0:
-                print("적립된 마일리지 :", recive_cal)
-                print()
-        elif number == '2':
+                if grade == '9':
+                    stop = "Yes"
+                    
+                elif (is_integer(grade) == True) and int(grade) >= 1 and int(grade) <= 5:
+                    cal = int(grade) + 6
+                    recive_order = order(str(cal))
+                    recive_cal = cal_order(recive_order)
+                    if recive_cal != 0:
+                        print("적립된 마일리지 :", recive_cal)
+                        print()
+                    stop = "Yes"
+                else:
+                    print('Type Error !!')
+                    print()
+        elif number == "2":
             save_data(file_name, stu_data)
         else:
             print("Type Error !!")
-            print()
-
 
 
 
@@ -1000,7 +991,7 @@ def school_rank():
         if int(int_box) < int(stu_data[i][3]):
             int_box = stu_data[i][3]
             str_box = stu_data[i]
-    print("전체 1등 :",str_box)
+    return str_box
      
     
         
@@ -1018,15 +1009,19 @@ def get_first_data(category):
         if category == stu_data[i][0]:
             amount_list.append(stu_data[i])
             count = count + 1
-
     int_box = amount_list[0][3]
     str_box = amount_list[0]
     for j in range(1,count):
-        if int_box < amount_list[j][3]:
+
+        if int(int_box) < int(amount_list[j][3]):
             int_box = amount_list[j][3]
             str_box = amount_list[j]
-        
     return str_box
+
+
+
+
+
 
 
 def grade_rank():
@@ -1034,26 +1029,14 @@ def grade_rank():
     i = 0
     while i != 5:
         grade_list = [""] * 5
-
-        recive1 = get_first_data(str(i+7)+"-1")
-        grade_list[0] = recive1
-
-        recive2 = get_first_data(str(i+7)+"-2")
-        grade_list[1] = recive2
- 
-        recive3 = get_first_data(str(i+7)+"-3")
-        grade_list[2] = recive3
-
-        recive4 = get_first_data(str(i+7)+"-4")
-        grade_list[3] = recive4
-
-        recive5 = get_first_data(str(i+7)+"-5")
-        grade_list[4] = recive5
+        for j in range(0,len(grade_list)):
+            recive_first = get_first_data(str(i+7)+"-"+str(j+1))
+            grade_list[j] = recive_first
 
         max = grade_list[0][3]
         str_box = grade_list[0]
         for j in range(1,len(grade_list)):
-            if max < grade_list[j][3]:
+            if int(max) < int(grade_list[j][3]):
                 max = grade_list[j][3]
                 str_box = grade_list[j]
         amount_grade_list[i] = str_box
@@ -1069,29 +1052,57 @@ def class_rank():
     while i != 5:
         print("**"+str(i+7)+"학년**")
         print()
-        recive1 = get_first_data(str(i+7)+"-1")
-        print(str(i+7)+"-1반 1등 :",recive1)
-        print()
-        recive2 = get_first_data(str(i+7)+"-2")
-        print(str(i+7)+"-2반 1등 :",recive2)
-        print()
-        recive3 = get_first_data(str(i+7)+"-3")
-        print(str(i+7)+"-3반 1등 :",recive3)
-        print()
-        recive4 = get_first_data(str(i+7)+"-4")
-        print(str(i+7)+"-4반 1등 :",recive4)
-        print()
-        recive5 = get_first_data(str(i+7)+"-5")
-        print(str(i+7)+"-5반 1등 :",recive5)
-        print()
+        for j in range(0,5):
+            recive_first = get_first_data(str(i+7)+"-"+str(j+1))
+            print(str(i+7)+"-"+str(j+1)+"반 1등 :",recive_first)
         i = i + 1
 
 
     
 
 
+def class_sum():
+    amount_sum = [""] * 25
+    amount_grade = [""] * 25
+    amount_sum_grade = [""] * 2
+    i = 0
+    j = 0
+    sum = 0
+    while i != 5:
+        for x in range(0,5):
+            sum = 0
+            for y in range(0,len(stu_data)):
+                if str(i+7)+"-"+str(x+1) == stu_data[y][0]:
+                    sum = sum + int(stu_data[y][3])
+
+            amount_sum[j] = sum
+            amount_grade[j] = str(i+7)+"-"+str(x+1)
+            j = j + 1
+            
+        i = i + 1      
+        
+    amount_sum_grade[0] = amount_sum
+    amount_sum_grade[1] = amount_grade     
+    return amount_sum_grade
+                    
+    
+    
+    
+    
+
+                
+            
 
 
+def grade_first_calss(recive_sum):
+    max = recive_sum[0][0]
+    str_box = recive_sum[1][0]
+    for i in range(1,len(recive_sum[0])):
+        if max < recive_sum[0][i]:
+            max = recive_sum[0][i]
+            str_box = recive_sum[1][i]
+    return str_box
+            
 
     
 
@@ -1108,13 +1119,16 @@ while number != '9':
         print()
 
     elif number == '2':
-        print("1 : 전교 1등 확인")
-        print("2 : 학년별 1등 확인")
-        print("3 : 반별 1등 확인")
+        print("1 : 전체 학년 1등 학생 확인")
+        print("2 : 각 학년별 1등 학생 확인")
+        print("3 : 전체 1등 반 확인")
+        print("4 : 반별 1등 학생 확인")
+        print("9 : 랭킹보드 종료")
         choose = input("Number : ")
         print()
         if choose == '1':
-            school_rank()
+            recive_school_rank = school_rank()
+            print("전체 학년 1등 학생",recive_school_rank)
             print()
         elif choose == '2':
             recive_grade_rank = grade_rank()
@@ -1122,7 +1136,15 @@ while number != '9':
                 print(str(i+7)+"학년 1등 :",recive_grade_rank[i])
             print()
         elif choose == '3':
+            recive_sum = class_sum()
+            recive_first_class = grade_first_calss(recive_sum)
+            print("전체 1등 반 :",recive_first_class+'반')
+            print()
+        elif choose == '4':
             class_rank()
+            print()
+        elif choose == '9':
+            print("Program End !!")
             print()
         else:
             print("Type Error !!")
